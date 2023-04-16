@@ -4,6 +4,6 @@
 ## Author: Kevin Salcedo
 ## Date: 16/04/2023
 
-[![Coverage Status](https://coveralls.io/repos/github/Kevinss02/PlantillaTSUpdated/badge.svg?branch=main)](https://coveralls.io/github/Kevinss02/PlantillaTSUpdated?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-Kevinss02/badge.svg?branch=main)](https://coveralls.io/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-Kevinss02?branch=main)
 
-[![Tests](https://github.com/Kevinss02/PlantillaTSUpdated/actions/workflows/node.js.yml/badge.svg)](https://github.com/Kevinss02/PlantillaTSUpdated/actions/workflows/node.js.yml)
+[![Tests](https://coveralls.io/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-Kevinss02/actions/workflows/node.js.yml/badge.svg)](https://coveralls.io/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-Kevinss02/actions/workflows/node.js.yml)
