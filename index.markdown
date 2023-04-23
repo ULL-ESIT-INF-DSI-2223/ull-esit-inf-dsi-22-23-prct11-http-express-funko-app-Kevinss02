@@ -1,6 +1,6 @@
 ---
-title: Informe DSI P10
-subtitle: API's asíncronas: ficheros, procesos, sockets
+title: Informe DSI P11
+subtitle: Http-Express-FunkoApp
 ---
 
 # Ejercicio - Crear un servidor Express para aplicación de registro de Funko Pops
