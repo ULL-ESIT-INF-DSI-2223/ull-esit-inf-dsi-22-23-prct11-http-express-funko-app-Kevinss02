@@ -212,11 +212,11 @@ A continuación se muestran otros ejemplos de ejecución de la aplicación:
 
 ## Ejemplo de Remove Success
 
-![Ej Ejecución List Success](Assets/Img/removeSuccess.png)
+![Ej Ejecución List Success](Assets/Img/deleteSuccess.png)
 
 ## Ejemplo de Remove Error
 
-![Ej Ejecución List Error](Assets/Img/removeError.png)
+![Ej Ejecución List Error](Assets/Img/deleteError.png)
 
 
 
@@ -224,97 +224,37 @@ A continuación se muestran otros ejemplos de ejecución de la aplicación:
 
 ## Enunciado
 
-El enunciado de este ejercicio solicitaba la creación de un cliente / servidor cuyo funcionamiento consitiría en que el cliente sea capaz de nviar un comando como mensaje JSON a través de un socket y el servidor se encargue de ejecutarlo y devolver al cliente el resultado de la ejecución.
+El enunciado de este ejercicio solicitaba la creación de un servidor Express que reciba peticiones GET de comandos, lo ejecute y lo devuelva en formato JSON.
 
 ## Implementación
 
-## Clase MessageEventEmitterClient
+## App.ts
 
-Esta clase extiende de la clase EventEmitter de Node.js, lo que significa que hereda todas las capacidades de la clase EventEmitter y puede emitir y escuchar eventos.
+Este fichero contiene el servidor web que utiliza el framework de Node.js Express para crear rutas y servir contenido estático. Cpomo mencioné anteriormente, este servidor web permite a los usuarios ejecutar comandos en el servidor y devuelve la salida del comando ejecutado.
 
-El constructor de la clase toma un argumento connection que es también una instancia de la clase EventEmitter. Dentro del constructor, se define una variable wholeData como una cadena vacía. Se registra un manejador de eventos en el objeto connection para el evento data. Cada vez que se emite el evento data, el manejador de eventos concatena los datos en la variable wholeData.
+Se define la ruta /execmd como la propia para ejecutar comandos. Este directorio debe estar dentro de un directorio con nombre public, que permite al servidor compartir contenido.
 
-La función general de esta clase es crear un mecanismo para recibir y procesar mensajes a través de una conexión de red. La clase se encarga de concatenar los datos recibidos en la conexión hasta que se complete un mensaje completo y luego emite un evento message con el mensaje completo como argumento.
+Si la consulta HTTP no tiene un parámetro cmd válido, el servidor devuelve un código de estado 400 y un mensaje de error. Si se proporciona un parámetro cmd, el servidor crea un proceso hijo usando la función spawn del módulo child_process para ejecutar el comando. La salida del comando se almacena en una variable commandOutput y se escribe en un archivo JSON commands.json en la carpeta public/execmd. 
 
-## Servidor 
-
+Luego, con la función readCommand que se exporta desde el fichero commands.ts, se lee este archivo json se devuelve su contenido en una respuesta de servidor con la siguiente estructura (definida en el fichero types.ts):
 ```
-import net from "net";
-import { spawn } from "child_process";
-import {MessageEventEmitterClient} from './eventEmitterClient.js';
+export type Command = {
+  title: string;
+  output: string
+}
 
-net.createServer((connection) => {
-    console.log("A client has connected.");
-
-    connection.write(JSON.stringify({ type: "ready" }) + "\n");
-
-    let commandString = '';
-    connection.on("data", (dataJSON) => {
-      commandString = dataJSON.toString();
-      console.log(commandString);
-    });
-
-    const command = spawn("cat", ["-n", "a.txt"]); // CommandString here
-
-    let output = "";
-    command.stdout.on("data", (piece) => {
-      output = piece.toString();
-    });
-
-    command.on("close", () => {
-      connection.write(
-        JSON.stringify({
-          type: "commandOutput",
-          output: output,
-        }) + "\n"
-      );
-    });
-
-    connection.on("close", () => {
-      console.log("A client has disconnected.");
-    });
-  })
-  .listen(60300, () => {
-    console.log("Waiting for clients to connect.");
-  });
-```
-
-## Cliente
-
-```
-import {connect} from 'net';
-import {MessageEventEmitterClient} from './eventEmitterClient.js';
-
-if (process.argv.length < 3) {
-  console.log('Please, provide a valid command.');
-} else {
-  let command = '';
-  for (let i = 0; i < process.argv.length - 2; i++) {
-    if (i === process.argv.length - 1) { command += process.argv[i + 2]; }
-    else { command += process.argv[i + 2] + " "; }
-  }
-
-  console.log(command);
-
-  const client = new MessageEventEmitterClient(connect({port: 60300}));
-
-  client.emit('data', command);
-  
-  client.on('message', (message) => {
-    if (message.type === 'ready') {
-      console.log(`Connection established.`);
-    } else if (message.type === 'commandOutput') {
-      console.log(`Execution command ${command}`);
-      console.log(`Output: \n${message.output}`);
-    } else {
-      console.log(`Message type ${message.type} is not valid`);
-    }
-  });
+export type ResponseType = {
+  type: 'add' | 'remove' | 'read' | 'list';
+  success: boolean;
+  command: Command | undefined;
 }
 ```
-El cliente recibe como argumento de la línea de comandos el comando que se querrá ejecutar. Luego se crea el socket correspondiente a la conexión con el puerto 60300 y el cliente emite por el socket la información de este comando a ejecutar.
 
-Cuando el servidor envíe una respuesta de tipo message que estará en formato JSON, se imprimirá en pantalla el resultado de la ejecución.
+Finalmente, si no se encuentra ninguna ruta coincidente, el servidor devuelve un código de estado 404 y un mensaje de error Route not Found.
+
+## Ejemplo de ejecución
+
+![Ej Ejecución Ejercicio PE](Assets/Img/ejerciciope.png)
 
 # Referencias
 * [Enunciado Práctica](https://ull-esit-inf-dsi-2223.github.io/prct11-http-express-funko-app/)
