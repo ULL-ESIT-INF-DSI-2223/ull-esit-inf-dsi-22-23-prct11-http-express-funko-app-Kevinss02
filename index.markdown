@@ -1,6 +1,8 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
-layout: home
+layout: page
+title: About
+permalink: /about/
 ---
+
+Esto es un informe de prácticas de la asignatura Desarrollo de Sistemas Informáticos, Universidad de La Laguna.
+Se ha utilizado Github Pages y Jekyll para darle un tema de diseño base.
