@@ -1,1 +1,1 @@
-{"cmd":"cata","output":""}
+{"cmd":"ls","output":"README.md\ncoverage\ndist\nnode_modules\npackage-lock.json\npackage.json\npublic\nsrc\ntests\ntsconfig.json\ntypedoc.json\n"}

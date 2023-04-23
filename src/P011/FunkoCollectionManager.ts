@@ -2,7 +2,6 @@ import { IFunkoData, Funko, FunkoType, FunkoGenre } from "./Funko.js";
 import * as fs from "fs";
 import chalk from "chalk";
 import { ResponseType } from "./types.js";
-import { app } from "./app.js";
 
 /**
  * FunkoCollectionManager - Class that includes all valid Management Operations
